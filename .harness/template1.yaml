@@ -1,0 +1,44 @@
+template:
+  name: template1stage
+  identifier: template1stage
+  versionLabel: v1
+  type: Stage
+  projectIdentifier: testkanika
+  orgIdentifier: default
+  tags: {}
+  spec:
+    type: Deployment
+    spec:
+      deploymentType: Kubernetes
+      execution:
+        steps:
+          - step:
+              type: ShellScript
+              name: a
+              identifier: a
+              spec:
+                shell: Bash
+                onDelegate: true
+                source:
+                  type: Inline
+                  spec:
+                    script: echo hello
+                environmentVariables: []
+                outputVariables: []
+              timeout: 10m
+        rollbackSteps: []
+      service:
+        serviceRef: k1
+        serviceInputs:
+          serviceDefinition:
+            type: Kubernetes
+            spec:
+              artifacts:
+                primary:
+                  primaryArtifactRef: <+input>
+                  sources: <+input>
+      environment:
+        environmentRef: t1
+        deployToAll: false
+        infrastructureDefinitions:
+          - identifier: dbdbd
